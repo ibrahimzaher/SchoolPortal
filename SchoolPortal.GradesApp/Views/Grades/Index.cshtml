@@ -1,67 +1,145 @@
-﻿@using SchoolPortal.GradesApp.ViewModles
+@using SchoolPortal.GradesApp.ViewModles
 @model IEnumerable<GradeIndexViewModel>
 
 @{
-    ViewData["Title"] = "Grades Directory";
+    ViewData["Title"] = "Academic Grades Directory";
+
+    // Dynamic Razor Stats Calculations
+    var totalGrades = Model.Count();
+    var averageScore = totalGrades > 0 ? Model.Average(m => m.Score) : 0;
+    var passingGrades = Model.Count(m => m.Score >= 50);
+    var passingRate = totalGrades > 0 ? (double)passingGrades / totalGrades * 100 : 0;
+    
+    var hasConnectionNotice = Model.Any(m => m.StudentName.Contains("Unavailable"));
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3 px-2 px-md-0">
-    <h2 class="text-primary fs-3 fs-md-2">Academic Grades</h2>
-    <a asp-action="Create" class="btn btn-success btn-sm btn-md-md">
-        + Assign New Grade
-    </a>
+<!-- Page Header/Hero -->
+<div class="page-hero d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 px-2 px-md-0">
+    <div>
+        <h2 class="text-gradient mb-1"><i class="bi bi-award-fill text-primary"></i> Academic Grades</h2>
+        <p class="text-muted mb-0">Overview of student academic performance across registered courses.</p>
+    </div>
+    <div>
+        <a asp-action="Create" class="btn-custom btn-primary-custom shadow-sm">
+            <i class="bi bi-plus-circle-fill"></i> Assign New Grade
+        </a>
+    </div>
 </div>
 
-@if (Model.Any(m => m.StudentName.Contains("Unavailable")))
+@if (hasConnectionNotice)
 {
-    <div class="alert alert-warning alert-dismissible fade show mx-2 mx-md-0" role="alert">
-        <strong><i class="bi bi-exclamation-triangle-fill"></i> Connection Notice:</strong> Some student names could not be retrieved because the Students Service is currently offline. Temporary IDs are displayed.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert-custom warning mb-4 mx-2 mx-md-0">
+        <div class="alert-icon-wrapper">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <div>
+            <h6 class="fw-bold mb-1">Student App Connection Notice</h6>
+            <p class="mb-0 small opacity-90">Some student names could not be retrieved because the Student Service is offline. Temporary Database IDs are shown below.</p>
+        </div>
     </div>
 }
 
-<div class="card shadow-sm mx-2 mx-md-0">
-    <div class="card-body p-0">
-        <table class="table table-hover table-striped mb-0 responsive-table">
-            <thead class="table-dark text-center">
+<!-- Dynamic Dashboard Stats Grid -->
+<div class="stats-grid mx-2 mx-md-0">
+    <div class="stat-card">
+        <div class="stat-icon primary">
+            <i class="bi bi-journal-check"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Total Grades</span>
+            <span class="stat-value">@totalGrades</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon accent">
+            <i class="bi bi-calculator"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Class Average</span>
+            <span class="stat-value">@averageScore.ToString("F1")%</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon success">
+            <i class="bi bi-trophy"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Passing Rate</span>
+            <span class="stat-value">@passingRate.ToString("F1")%</span>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card-custom mx-2 mx-md-0">
+    <div class="card-header-custom d-flex justify-content-between align-items-center bg-white py-3">
+        <h5 class="mb-0 text-main fw-bold"><i class="bi bi-list-columns text-primary me-2"></i>Recorded Grades</h5>
+        <span class="badge bg-light text-muted border px-2 py-1 fs-8 fw-semibold">@totalGrades Entries</span>
+    </div>
+    
+    <div class="table-responsive-container border-0">
+        <table class="table-custom mb-0">
+            <thead>
                 <tr>
                     <th>Student Name</th>
-                    <th>Course Name</th>
-                    <th>Score</th>
-                    <th>Date Assigned</th>
-                    <th>Actions</th>
+                    <th>Course Title</th>
+                    <th class="text-center">Score</th>
+                    <th class="text-center">Date Assigned</th>
+                    <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!Model.Any())
                 {
                     <tr>
-                        <td colspan="5" class="text-center text-muted py-4">No grades recorded yet. Click "Assign New Grade" to start.</td>
+                        <td colspan="5" class="text-center text-muted py-5">
+                            <i class="bi bi-journal-x display-6 text-muted mb-3 d-block"></i>
+                            No grades recorded yet. Click "Assign New Grade" to get started.
+                        </td>
                     </tr>
                 }
                 @foreach (var item in Model)
                 {
-                    <tr class="text-center align-middle">
-                        <td class="fw-bold" data-label="Student Name">
+                    <tr class="align-middle">
+                        <td class="fw-semibold text-main" data-label="Student Name">
                             @if (item.StudentName.Contains("Unavailable"))
                             {
-                                <span class="text-danger"><i class="bi bi-wifi-off"></i> Student ID: @item.StudentId</span>
+                                <span class="text-danger"><i class="bi bi-wifi-off"></i> ID: @item.StudentId</span>
                             }
                             else
                             {
-                                @item.StudentName
+                                <i class="bi bi-person-fill text-muted me-1 small"></i> @item.StudentName
                             }
                         </td>
-                        <td data-label="Course Name">@item.CourseName</td>
-                        <td data-label="Score">
-                            <span class="badge @(item.Score >= 50 ? "bg-success" : "bg-danger") fs-6">
-                                @item.Score / 100
-                            </span>
+                        <td data-label="Course Title" class="text-secondary fw-semibold">
+                            <i class="bi bi-book-half text-muted me-1 small"></i> @item.CourseName
                         </td>
-                        <td data-label="Date Assigned">@item.Date.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td data-label="Actions" class="mobile-actions">
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white me-1">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                        <td data-label="Score" class="text-center">
+                            @if (item.Score >= 50)
+                            {
+                                <span class="badge-custom success">
+                                    <i class="bi bi-check-circle-fill"></i> @item.Score / 100
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge-custom danger">
+                                    <i class="bi bi-x-circle-fill"></i> @item.Score / 100
+                                </span>
+                            }
+                        </td>
+                        <td data-label="Date Assigned" class="text-center text-muted small">
+                            <i class="bi bi-calendar3 me-1 small"></i> @item.Date.ToString("yyyy-MM-dd HH:mm")
+                        </td>
+                        <td data-label="Actions" class="text-end mobile-actions">
+                            <div class="d-flex flex-nowrap justify-content-end gap-2">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn-custom btn-secondary-custom py-1.5 px-3 btn-sm">
+                                    <i class="bi bi-eye-fill"></i> Details
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-custom btn-danger-custom py-1.5 px-3 btn-sm">
+                                    <i class="bi bi-trash3-fill"></i> Delete
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 }

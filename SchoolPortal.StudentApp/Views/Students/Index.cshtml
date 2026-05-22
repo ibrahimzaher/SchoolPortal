@@ -1,44 +1,100 @@
-﻿@model IEnumerable<Student>
+@model IEnumerable<Student>
 @{
-    ViewData["Title"] = "Students List";
+    ViewData["Title"] = "Students Directory";
+
+    // Dynamic Razor KPI Calculations
+    var totalStudents = Model.Count();
+    var recentEnrollments = Model.Count(m => m.EnrollmentDate >= DateTime.UtcNow.AddMonths(-12));
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="text-primary">Students Directory</h2>
-    <a asp-action="Create" class="btn btn-success">
-        + Add New Student
-    </a>
+<!-- Page Header/Hero -->
+<div class="page-hero d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 px-2 px-md-0">
+    <div>
+        <h2 class="text-gradient mb-1"><i class="bi bi-people-fill text-primary"></i> Students Directory</h2>
+        <p class="text-muted mb-0">Manage registered student profiles, enrollments, and academic details.</p>
+    </div>
+    <div>
+        <a asp-action="Create" class="btn-custom btn-primary-custom shadow-sm">
+            <i class="bi bi-person-plus-fill"></i> Add New Student
+        </a>
+    </div>
 </div>
 
-<div class="card shadow-sm">
-    <div class="card-body p-0">
-        <table class="table table-hover table-striped mb-0">
-            <thead class="table-dark">
-                <tr class="text-center">
+<!-- Dynamic Dashboard Stats Grid -->
+<div class="stats-grid mx-2 mx-md-0" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+    <div class="stat-card">
+        <div class="stat-icon primary">
+            <i class="bi bi-people"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Total Enrolled</span>
+            <span class="stat-value">@totalStudents Students</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon success">
+            <i class="bi bi-calendar-check"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Recent Enrollments (Past Yr)</span>
+            <span class="stat-value">@recentEnrollments Enrolled</span>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card-custom mx-2 mx-md-0">
+    <div class="card-header-custom d-flex justify-content-between align-items-center bg-white py-3">
+        <h5 class="mb-0 text-main fw-bold"><i class="bi bi-list-stars text-primary me-2"></i>Student Profiles</h5>
+        <span class="badge bg-light text-muted border px-2 py-1 fs-8 fw-semibold">@totalStudents Active</span>
+    </div>
+    
+    <div class="table-responsive-container border-0">
+        <table class="table-custom mb-0">
+            <thead>
+                <tr>
                     <th>Full Name</th>
                     <th>Email Address</th>
-                    <th>Enrollment Date</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center">Enrollment Date</th>
+                    <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!Model.Any())
                 {
                     <tr>
-                        <td colspan="4" class="text-center text-muted py-4">No students found. Click "Add New Student" to start.</td>
+                        <td colspan="4" class="text-center text-muted py-5">
+                            <i class="bi bi-people display-6 text-muted mb-3 d-block"></i>
+                            No students registered in the system yet. Click "Add New Student" to begin.
+                        </td>
                     </tr>
                 }
                 @foreach (var item in Model)
                 {
-                    <tr class="text-center ">
-                        <td>@item.FirstName @item.LastName</td>
-                        <td>@item.Email</td>
-                        <td>@item.EnrollmentDate.ToString("yyyy-MM-dd")</td>
-        
-                        <td class="d-flex flex-row gap-2 justify-content-between">
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning w-100">Edit</a>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white w-100">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger w-100">Delete</a>
+                    <tr class="align-middle">
+                        <td class="fw-semibold text-main" data-label="Full Name">
+                            <i class="bi bi-person-circle text-muted me-2"></i> @item.FirstName @item.LastName
+                        </td>
+                        <td data-label="Email Address" class="text-primary fw-medium">
+                            <a href="mailto:@item.Email" class="text-decoration-none text-primary">
+                                <i class="bi bi-envelope-fill text-muted me-1 small"></i> @item.Email
+                            </a>
+                        </td>
+                        <td data-label="Enrollment Date" class="text-center text-secondary small">
+                            <i class="bi bi-calendar3 me-1 small"></i> @item.EnrollmentDate.ToString("yyyy-MM-dd")
+                        </td>
+                        <td data-label="Actions" class="text-end mobile-actions">
+                            <div class="d-flex flex-nowrap justify-content-end gap-2">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-custom btn-warning-custom py-1.5 px-3 btn-sm">
+                                    <i class="bi bi-pencil-fill"></i> Edit
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn-custom btn-secondary-custom py-1.5 px-3 btn-sm">
+                                    <i class="bi bi-eye-fill"></i> Details
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-custom btn-danger-custom py-1.5 px-3 btn-sm">
+                                    <i class="bi bi-trash3-fill"></i> Delete
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 }

@@ -83,7 +83,7 @@ public class StudentsController : Controller
 
         var student = await _context.Students.FindAsync(id);
         if (student == null) return NotFound();
-        var emailExists = await _context.Students.AnyAsync(s => s.Email == model.Email);
+        var emailExists = await _context.Students.AnyAsync(s => s.Email == model.Email && s.Id != id);
         if (emailExists)
         {
             ModelState.AddModelError("Email", "It is alerady another student use it");
@@ -149,7 +149,7 @@ public class StudentsController : Controller
             .FirstOrDefaultAsync();
 
         if (studentDto == null)
-            return NotFound(new { message = $"Student with Id {id} not found." }); 
+            return NotFound(new { message = $"Student with Id {id} not found." });
 
         return Ok(studentDto);
     }

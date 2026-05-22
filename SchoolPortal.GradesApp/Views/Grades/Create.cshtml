@@ -1,49 +1,80 @@
-﻿@using SchoolPortal.GradesApp.ViewModles
+@using SchoolPortal.GradesApp.ViewModles
 @model GradeCreateViewModel
 
 @{
-    ViewData["Title"] = "Assign Grade";
+    ViewData["Title"] = "Assign Academic Grade";
 }
 
-<div class="card shadow-sm">
-    <div class="card-header bg-success text-white">
-        <h4 class="mb-0">Assign New Grade</h4>
-    </div>
-    <div class="card-body">
-        <form asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-            <div class="mb-3">
-                <label asp-for="StudentId" class="form-label fw-bold"></label>
-                <select asp-for="StudentId" asp-items="Model.StudentsList" class="form-select">
-                    <option value="">-- Select a Registered Student --</option>
-                </select>
-                <span asp-validation-for="StudentId" class="text-danger"></span>
+<div class="row justify-content-center mx-2 mx-md-0">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header-custom py-3 bg-white">
+                <div>
+                    <h5 class="mb-1 text-main fw-bold">
+                        <i class="bi bi-file-earmark-plus text-primary me-2"></i>Assign New Grade
+                    </h5>
+                    <p class="text-muted mb-0 small">Enter the academic marks and notes for the student.</p>
+                </div>
+                <i class="bi bi-award display-6 text-primary opacity-25"></i>
             </div>
+            
+            <div class="card-body-custom p-4">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert-custom danger mb-4"></div>
 
-            <div class="mb-3">
-                <label asp-for="CourseName" class="form-label fw-bold"></label>
-                <input asp-for="CourseName" class="form-control" placeholder="e.g. Advanced Web Development" />
-                <span asp-validation-for="CourseName" class="text-danger"></span>
-            </div>
+                    <!-- Student Select Dropdown -->
+                    <div class="mb-4">
+                        <label asp-for="StudentId" class="form-label-custom">
+                            <i class="bi bi-person-badge text-muted me-1"></i> Registered Student
+                        </label>
+                        <select asp-for="StudentId" asp-items="Model.StudentsList" class="form-select form-select-custom">
+                            <option value="">-- Select a Registered Student --</option>
+                        </select>
+                        <span asp-validation-for="StudentId" class="text-danger mt-1 d-block small fw-semibold"></span>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="Score" class="form-label fw-bold"></label>
-                <input asp-for="Score" type="number" step="0.01" class="form-control" placeholder="0.00 - 100.00" />
-                <span asp-validation-for="Score" class="text-danger"></span>
-            </div>
+                    <!-- Course Title -->
+                    <div class="mb-4">
+                        <label asp-for="CourseName" class="form-label-custom">
+                            <i class="bi bi-book text-muted me-1"></i> Course Title
+                        </label>
+                        <input asp-for="CourseName" class="form-control form-control-custom" placeholder="e.g. Advanced Web Development" />
+                        <span asp-validation-for="CourseName" class="text-danger mt-1 d-block small fw-semibold"></span>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="Notes" class="form-label fw-bold">Teacher Notes (Optional)</label>
-                <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Add feedback or remarks..."></textarea>
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
+                    <!-- Score -->
+                    <div class="mb-4">
+                        <label asp-for="Score" class="form-label-custom">
+                            <i class="bi bi-percent text-muted me-1"></i> Score Achieved
+                        </label>
+                        <div class="input-group">
+                            <input asp-for="Score" type="number" step="0.01" min="0" max="100" class="form-control form-control-custom" placeholder="0.00 - 100.00" />
+                            <span class="input-group-text bg-light border-start-0 text-muted fw-semibold">/ 100</span>
+                        </div>
+                        <span asp-validation-for="Score" class="text-danger mt-1 d-block small fw-semibold"></span>
+                    </div>
 
-            <div class="d-flex justify-content-between mt-4">
-                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-                <button type="submit" class="btn btn-success">Save Grade</button>
+                    <!-- Teacher Notes -->
+                    <div class="mb-4">
+                        <label asp-for="Notes" class="form-label-custom">
+                            <i class="bi bi-chat-text text-muted me-1"></i> Teacher Remarks (Optional)
+                        </label>
+                        <textarea asp-for="Notes" class="form-control form-control-custom" rows="4" placeholder="Add feedback, remarks, or specific details..."></textarea>
+                        <span asp-validation-for="Notes" class="text-danger mt-1 d-block small fw-semibold"></span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="d-flex flex-column flex-sm-row justify-content-between gap-3 mt-5 pt-3 border-top">
+                        <a asp-action="Index" class="btn-custom btn-secondary-custom">
+                            <i class="bi bi-arrow-left"></i> Back to Directory
+                        </a>
+                        <button type="submit" class="btn-custom btn-primary-custom shadow-sm">
+                            <i class="bi bi-check2-circle"></i> Save Grade Entry
+                        </button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
