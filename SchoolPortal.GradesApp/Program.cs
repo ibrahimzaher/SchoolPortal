@@ -1,12 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolPortal.GradesApp.Data;
+using SchoolPortal.GradesApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GradeDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));  
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHttpClient<StudentsServiceClient>(client =>
+{
+    var baseUrl = builder.Configuration["ExternalServices:StudentsServiceUrl"]
+                  ?? throw new InvalidOperationException("Students Service URL is not configured.");
+
+    client.BaseAddress = new Uri(baseUrl);
+    client.Timeout = TimeSpan.FromSeconds(5); 
+});
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
