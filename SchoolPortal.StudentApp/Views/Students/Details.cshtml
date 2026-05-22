@@ -1,3 +1,33 @@
-﻿
+﻿@model Student
+
 @{
+    ViewData["Title"] = "Student Details";
 }
+
+<div class="card shadow-sm">
+    <div class="card-header bg-info text-white">
+        <h4 class="mb-0">Student Profile</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4 text-muted">First Name</dt>
+            <dd class="col-sm-8 fw-bold">@Model.FirstName</dd>
+
+            <dt class="col-sm-4 text-muted">Last Name</dt>
+            <dd class="col-sm-8 fw-bold">@Model.LastName</dd>
+
+            <dt class="col-sm-4 text-muted">Email Address</dt>
+            <dd class="col-sm-8 text-primary">@Model.Email</dd>
+
+            <dt class="col-sm-4 text-muted">Date of Birth</dt>
+            <dd class="col-sm-8">@(Model.DateOfBirth?.ToString("yyyy-MM-dd") ?? "N/A")</dd>
+
+            <dt class="col-sm-4 text-muted">Enrollment Date</dt>
+            <dd class="col-sm-8">@Model.EnrollmentDate.ToString("yyyy-MM-dd HH:mm")</dd>
+        </dl>
+    </div>
+    <div class="card-footer bg-light d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Profile</a>
+    </div>
+</div>
