@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolPortal.StudentApp.Data;
+using SchoolPortal.StudentApp.DTOs;
 using SchoolPortal.StudentApp.Models;
 using SchoolPortal.StudentApp.ViewModels;
 
@@ -115,5 +116,41 @@ public class StudentsController : Controller
 
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var studentsDto = await _context.Students
+            .Select(s => new StudentDto
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Email = s.Email
+            })
+            .ToListAsync();
+
+        return Ok(studentsDto);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var studentDto = await _context.Students
+            .Where(s => s.Id == id)
+            .Select(s => new StudentDto
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Email = s.Email
+            })
+            .FirstOrDefaultAsync();
+
+        if (studentDto == null)
+            return NotFound(new { message = $"Student with Id {id} not found." }); 
+
+        return Ok(studentDto);
     }
 }
