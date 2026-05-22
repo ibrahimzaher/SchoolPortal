@@ -1,0 +1,39 @@
+﻿@model Grade
+
+@{
+    ViewData["Title"] = "Grade Certificate Details";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-info text-white">
+        <h4 class="mb-0">Academic Grade Report</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4 text-muted">Student Name</dt>
+            <dd class="col-sm-8 fw-bold text-primary fs-5">@ViewBag.StudentName</dd>
+
+            <dt class="col-sm-4 text-muted">Student ID</dt>
+            <dd class="col-sm-8">@Model.StudentId</dd>
+
+            <dt class="col-sm-4 text-muted">Course Title</dt>
+            <dd class="col-sm-8 fw-bold">@Model.CourseName</dd>
+
+            <dt class="col-sm-4 text-muted">Score Achieved</dt>
+            <dd class="col-sm-8">
+                <span class="badge @(Model.Score >= 50 ? "bg-success" : "bg-danger") fs-6">
+                    @Model.Score / 100
+                </span>
+            </dd>
+
+            <dt class="col-sm-4 text-muted">Date Logged</dt>
+            <dd class="col-sm-8">@Model.Date.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+            <dt class="col-sm-4 text-muted">Remarks</dt>
+            <dd class="col-sm-8 text-secondary">@(string.IsNullOrEmpty(Model.Notes) ? "No notes provided." : Model.Notes)</dd>
+        </dl>
+    </div>
+    <div class="card-footer bg-light">
+        <a asp-action="Index" class="btn btn-secondary">Back to Directory</a>
+    </div>
+</div>

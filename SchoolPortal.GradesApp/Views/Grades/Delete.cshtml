@@ -1,0 +1,27 @@
+﻿@model Grade
+
+@{
+    ViewData["Title"] = "Delete Grade Record";
+}
+
+<div class="card border-danger shadow-sm">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Revoke Grade Record</h4>
+    </div>
+    <div class="card-body py-4">
+        <h5 class="text-center text-dark mb-4">Are you sure you want to permanently remove this grade entry?</h5>
+            
+        <div class="bg-light p-3 rounded mb-3">
+            <p class="mb-2"><strong>Student:</strong> <span class="text-primary">@ViewBag.StudentName</span></p>
+            <p class="mb-2"><strong>Course:</strong> @Model.CourseName</p>
+            <p class="mb-0"><strong>Score:</strong> <span class="text-danger fw-bold">@Model.Score</span></p>
+        </div>
+    </div>
+    <div class="card-footer bg-light d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        </form>
+    </div>
+</div>
