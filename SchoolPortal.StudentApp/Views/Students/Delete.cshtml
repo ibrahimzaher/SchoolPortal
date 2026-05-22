@@ -1,23 +1,70 @@
-﻿@model Student
+@model Student
 
 @{
-    ViewData["Title"] = "Delete Student";
+    ViewData["Title"] = "Delete Student Profile";
 }
 
-<div class="card border-danger shadow-sm">
-    <div class="card-header bg-danger text-white">
-        <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Confirm Delete</h4>
-    </div>
-    <div class="card-body text-center py-4">
-        <h5 class="text-dark mb-3">Are you sure you want to permanently delete this student?</h5>
-        <p class="fs-4 fw-bold text-danger mb-1">@Model.FirstName @Model.LastName</p>
-        <p class="text-muted small">Email: @Model.Email</p>
-    </div>
-    <div class="card-footer bg-light d-flex justify-content-between">
-        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-        <form asp-action="Delete" method="post">
-            <input type="hidden" asp-for="Id" />
-            <button type="submit" class="btn btn-danger">Confirm Delete</button>
-        </form>
+<div class="row justify-content-center mx-2 mx-md-0">
+    <div class="col-lg-8">
+        <div class="card-custom border-danger">
+            <!-- Header warning block -->
+            <div class="card-header-custom py-3 bg-danger-subtle border-danger-subtle text-danger d-flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="mb-1 fw-bold"><i class="bi bi-exclamation-octagon-fill me-2"></i>Delete Student Profile</h5>
+                    <p class="text-danger opacity-75 mb-0 small">This action is irreversible and will permanently purge this student record.</p>
+                </div>
+                <i class="bi bi-person-x display-6 opacity-50"></i>
+            </div>
+
+            <div class="card-body-custom p-4">
+                <!-- Safety notification warning -->
+                <div class="alert-custom danger mb-4">
+                    <div class="alert-icon-wrapper">
+                        <i class="bi bi-shield-fill-exclamation"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Confirm Student Deletion</h6>
+                        <p class="mb-0 small opacity-90">Deleting this student record will remove their profile from the central register. Please verify details before confirming deletion.</p>
+                    </div>
+                </div>
+
+                <!-- Info summary block -->
+                <div class="bg-light rounded p-4 border mb-4">
+                    <h6 class="fw-bold text-muted uppercase small mb-3"><i class="bi bi-info-circle me-1"></i>Profile Verification</h6>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <span class="text-muted d-block small">FULL NAME</span>
+                            <span class="fw-bold text-danger fs-5">@Model.FirstName @Model.LastName</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-muted d-block small">EMAIL ADDRESS</span>
+                            <span class="fw-bold text-main">@Model.Email</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-muted d-block small">STUDENT ID</span>
+                            <span class="fw-bold text-secondary">#@Model.Id</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="text-muted d-block small">ENROLLMENT DATE</span>
+                            <span class="fw-bold text-secondary">@Model.EnrollmentDate.ToString("yyyy-MM-dd")</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Forms -->
+                <div class="d-flex flex-column flex-sm-row justify-content-between gap-3 mt-4 pt-3 border-top">
+                    <a asp-action="Index" class="btn-custom btn-secondary-custom">
+                        <i class="bi bi-arrow-left"></i> Cancel and Keep Profile
+                    </a>
+                    
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn-custom btn-danger-custom shadow-sm w-100">
+                            <i class="bi bi-trash3-fill"></i> Confirm Deletion
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

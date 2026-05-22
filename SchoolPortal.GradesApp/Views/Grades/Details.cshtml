@@ -1,39 +1,83 @@
-﻿@model Grade
+@model Grade
 
 @{
-    ViewData["Title"] = "Grade Certificate Details";
+    ViewData["Title"] = "Academic Grade Report";
+
+    // Dynamic Grade Letter Calculation
+    string gradeLetter = "F";
+    string gradeClass = "danger";
+    string gradeMessage = "Failed - Action Required";
+
+    if (Model.Score >= 90) { gradeLetter = "A+"; gradeClass = "success"; gradeMessage = "Excellent / Outstanding Achievement"; }
+    else if (Model.Score >= 80) { gradeLetter = "A"; gradeClass = "success"; gradeMessage = "Very Good / Strong Performance"; }
+    else if (Model.Score >= 70) { gradeLetter = "B"; gradeClass = "success"; gradeMessage = "Good / Satisfactory Progress"; }
+    else if (Model.Score >= 60) { gradeLetter = "C"; gradeClass = "warning"; gradeMessage = "Pass / Average Performance"; }
+    else if (Model.Score >= 50) { gradeLetter = "D"; gradeClass = "warning"; gradeMessage = "Marginal Pass"; }
 }
 
-<div class="card shadow-sm">
-    <div class="card-header bg-info text-white">
-        <h4 class="mb-0">Academic Grade Report</h4>
-    </div>
-    <div class="card-body">
-        <dl class="row mb-0">
-            <dt class="col-sm-4 text-muted">Student Name</dt>
-            <dd class="col-sm-8 fw-bold text-primary fs-5">@ViewBag.StudentName</dd>
+<div class="row justify-content-center mx-2 mx-md-0">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <!-- Header designed as a Certificate Header -->
+            <div class="card-header-custom py-4 bg-white text-center d-flex flex-column align-items-center">
+                <i class="bi bi-patch-check-fill text-primary display-5 mb-2"></i>
+                <h4 class="mb-1 text-main fw-bold text-gradient">Academic Grade Report</h4>
+                <p class="text-muted mb-0 small">Official performance certificate for student course enrollment.</p>
+            </div>
 
-            <dt class="col-sm-4 text-muted">Student ID</dt>
-            <dd class="col-sm-8">@Model.StudentId</dd>
+            <div class="card-body-custom p-4">
+                <!-- Large Highlight Widget for Score -->
+                <div class="bg-light rounded p-4 mb-4 text-center border d-flex flex-column flex-md-row align-items-center justify-content-around gap-3">
+                    <div>
+                        <span class="text-muted uppercase small fw-bold d-block mb-1">SCORE ACHIEVED</span>
+                        <span class="display-4 fw-extrabold text-main">@Model.Score.ToString("F1")<span class="fs-4 text-muted">/100</span></span>
+                    </div>
+                    <div class="vr d-none d-md-block" style="height: 60px;"></div>
+                    <hr class="d-md-none w-100 my-2">
+                    <div class="text-center">
+                        <span class="badge-custom @gradeClass fs-5 px-4 py-2">
+                            <i class="bi bi-star-fill"></i> Grade @gradeLetter
+                        </span>
+                        <small class="text-muted d-block mt-2 fw-semibold">@gradeMessage</small>
+                    </div>
+                </div>
 
-            <dt class="col-sm-4 text-muted">Course Title</dt>
-            <dd class="col-sm-8 fw-bold">@Model.CourseName</dd>
+                <!-- Structured Metadata DL list -->
+                <dl class="dl-custom mb-0 mt-4 row">
+                    <div class="col-md-6 mb-3">
+                        <dt><i class="bi bi-person-fill text-muted me-1"></i> Student Name</dt>
+                        <dd class="text-primary">@ViewBag.StudentName</dd>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <dt><i class="bi bi-key-fill text-muted me-1"></i> Student ID</dt>
+                        <dd>@Model.StudentId</dd>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <dt><i class="bi bi-journal-text text-muted me-1"></i> Course Title</dt>
+                        <dd>@Model.CourseName</dd>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <dt><i class="bi bi-clock-fill text-muted me-1"></i> Date Logged</dt>
+                        <dd class="small">@Model.Date.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <dt><i class="bi bi-chat-left-quote-fill text-muted me-1"></i> Teacher Remarks</dt>
+                        <dd class="lh-base text-secondary fw-medium py-2">
+                            @(string.IsNullOrEmpty(Model.Notes) ? "No notes or specific feedback remarks were registered for this grade record." : Model.Notes)
+                        </dd>
+                    </div>
+                </dl>
 
-            <dt class="col-sm-4 text-muted">Score Achieved</dt>
-            <dd class="col-sm-8">
-                <span class="badge @(Model.Score >= 50 ? "bg-success" : "bg-danger") fs-6">
-                    @Model.Score / 100
-                </span>
-            </dd>
-
-            <dt class="col-sm-4 text-muted">Date Logged</dt>
-            <dd class="col-sm-8">@Model.Date.ToString("yyyy-MM-dd HH:mm:ss")</dd>
-
-            <dt class="col-sm-4 text-muted">Remarks</dt>
-            <dd class="col-sm-8 text-secondary">@(string.IsNullOrEmpty(Model.Notes) ? "No notes provided." : Model.Notes)</dd>
-        </dl>
-    </div>
-    <div class="card-footer bg-light">
-        <a asp-action="Index" class="btn btn-secondary">Back to Directory</a>
+                <!-- Footer Actions -->
+                <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                    <a asp-action="Index" class="btn-custom btn-secondary-custom">
+                        <i class="bi bi-arrow-left"></i> Back to Directory
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-custom btn-danger-custom">
+                        <i class="bi bi-trash3-fill"></i> Delete Record
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

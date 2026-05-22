@@ -22,6 +22,7 @@ services:
       - "5001:8080"  
     environment:
       - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=StudentsDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - ExternalServices__GradesPortalUrl=http://localhost:5002
     depends_on:
       - sqlserver
     networks:
@@ -38,6 +39,7 @@ services:
     environment:
       - ConnectionStrings__DefaultConnection=Server=${DB_SERVER};Database=GradesDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
       - ExternalServices__StudentsServiceUrl=http://students-mvc:8080
+      - ExternalServices__StudentsPortalUrl=http://localhost:5001
     depends_on:
       - sqlserver
     networks:

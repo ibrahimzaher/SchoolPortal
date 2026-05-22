@@ -1,52 +1,83 @@
-﻿@model StudentCreateViewModel
+@model StudentCreateViewModel
 
 @{
     ViewData["Title"] = "Add New Student";
 }
 
-<div class="card shadow-sm">
-    <div class="card-header bg-success text-white">
-        <h4 class="mb-0">Add New Student</h4>
-    </div>
-    <div class="card-body">
-        <form asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-            <div class="mb-3">
-                <label asp-for="FirstName" class="form-label fw-bold"></label>
-                <input asp-for="FirstName" class="form-control" placeholder="e.g., John" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+<div class="row justify-content-center mx-2 mx-md-0">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header-custom py-3 bg-white">
+                <div>
+                    <h5 class="mb-1 text-main fw-bold">
+                        <i class="bi bi-person-plus text-primary me-2"></i>Register New Student
+                    </h5>
+                    <p class="text-muted mb-0 small">Create a new student academic profile in the directory.</p>
+                </div>
+                <i class="bi bi-person-badge display-6 text-primary opacity-25"></i>
             </div>
+            
+            <div class="card-body-custom p-4">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert-custom danger mb-4"></div>
 
-            <div class="mb-3">
-                <label asp-for="LastName" class="form-label fw-bold"></label>
-                <input asp-for="LastName" class="form-control" placeholder="e.g., Doe" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
+                    <!-- Row for First & Last Name -->
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="FirstName" class="form-label-custom">
+                                <i class="bi bi-person text-muted me-1"></i> First Name
+                            </label>
+                            <input asp-for="FirstName" class="form-control form-control-custom" placeholder="e.g. John" />
+                            <span asp-validation-for="FirstName" class="text-danger mt-1 d-block small fw-semibold"></span>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="LastName" class="form-label-custom">
+                                <i class="bi bi-person text-muted me-1"></i> Last Name
+                            </label>
+                            <input asp-for="LastName" class="form-control form-control-custom" placeholder="e.g. Doe" />
+                            <span asp-validation-for="LastName" class="text-danger mt-1 d-block small fw-semibold"></span>
+                        </div>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label fw-bold"></label>
-                <input asp-for="Email" class="form-control" placeholder="john.doe@example.com" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+                    <!-- Email Address -->
+                    <div class="mb-4">
+                        <label asp-for="Email" class="form-label-custom">
+                            <i class="bi bi-envelope text-muted me-1"></i> Email Address
+                        </label>
+                        <input asp-for="Email" type="email" class="form-control form-control-custom" placeholder="john.doe@example.com" />
+                        <span asp-validation-for="Email" class="text-danger mt-1 d-block small fw-semibold"></span>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="DateOfBirth" class="form-label fw-bold"></label>
-                <input asp-for="DateOfBirth" type="date" class="form-control" placeholder="Select date of birth" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
+                    <!-- Row for DOB & Enrollment Date -->
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="DateOfBirth" class="form-label-custom">
+                                <i class="bi bi-calendar-event text-muted me-1"></i> Date of Birth
+                            </label>
+                            <input asp-for="DateOfBirth" type="date" class="form-control form-control-custom" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger mt-1 d-block small fw-semibold"></span>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="EnrollmentDate" class="form-label-custom">
+                                <i class="bi bi-calendar-check text-muted me-1"></i> Enrollment Date & Time
+                            </label>
+                            <input asp-for="EnrollmentDate" type="datetime-local" class="form-control form-control-custom" />
+                            <span asp-validation-for="EnrollmentDate" class="text-danger mt-1 d-block small fw-semibold"></span>
+                        </div>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="EnrollmentDate" class="form-label fw-bold"></label>
-                <input asp-for="EnrollmentDate" type="datetime-local" class="form-control" placeholder="Select enrollment date" />
-                <span asp-validation-for="EnrollmentDate" class="text-danger"></span>
+                    <!-- Actions -->
+                    <div class="d-flex flex-column flex-sm-row justify-content-between gap-3 mt-5 pt-3 border-top">
+                        <a asp-action="Index" class="btn-custom btn-secondary-custom">
+                            <i class="bi bi-arrow-left"></i> Back to Directory
+                        </a>
+                        <button type="submit" class="btn-custom btn-primary-custom shadow-sm">
+                            <i class="bi bi-check2-circle"></i> Save Student Record
+                        </button>
+                    </div>
+                </form>
             </div>
-
-            <div class="d-flex justify-content-between mt-4">
-                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-                <button type="submit" class="btn btn-success">Save Student</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 

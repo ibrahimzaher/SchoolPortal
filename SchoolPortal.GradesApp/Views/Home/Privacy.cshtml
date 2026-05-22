@@ -1,6 +1,29 @@
-﻿@{
+@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="row justify-content-center mx-2 mx-md-0">
+    <div class="col-lg-8">
+        <div class="card-custom">
+            <div class="card-header-custom py-3 bg-white">
+                <h5 class="mb-0 text-main fw-bold"><i class="bi bi-shield-lock-fill text-primary me-2"></i>Privacy Policy</h5>
+                <i class="bi bi-shield-check display-6 text-primary opacity-25"></i>
+            </div>
+            <div class="card-body-custom p-4 text-secondary lh-base">
+                <p>This privacy policy outlines how the SchoolPortal academic management framework handles personal information and data privacy across its connected web service portals.</p>
+                
+                <h6 class="text-main fw-bold mt-4 mb-2"><i class="bi bi-database me-1"></i> Data Collection & Usage</h6>
+                <p>We log student demographic details and academic performance scores solely to support school curriculum records. Database connections are encrypted and REST service integrations are restricted strictly to authorized internal servers.</p>
+                
+                <h6 class="text-main fw-bold mt-4 mb-2"><i class="bi bi-person-fill-lock me-1"></i> System Access Security</h6>
+                <p>All academic grade reports, teacher feedback remarks, and enrollment date records are safeguarded from public indexing. Access controls are implemented through secure local enterprise hosting.</p>
+                
+                <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                    <a asp-controller="Grades" asp-action="Index" class="btn-custom btn-secondary-custom">
+                        <i class="bi bi-arrow-left"></i> Back to Directory
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
