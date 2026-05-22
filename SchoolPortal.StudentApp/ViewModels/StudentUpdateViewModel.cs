@@ -23,7 +23,6 @@ public class StudentUpdateViewModel
     [Display(Name = "Email Address")]
     public string Email { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Date of Birth is required")]
     [DataType(DataType.Date)]
     [Display(Name = "Date of Birth")]
     public DateOnly? DateOfBirth { get; set; }

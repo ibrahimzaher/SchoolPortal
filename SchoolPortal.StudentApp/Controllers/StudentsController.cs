@@ -36,7 +36,12 @@ public class StudentsController : Controller
     public async Task<IActionResult> Create(StudentCreateViewModel model)
     {
         if (!ModelState.IsValid) return View(model);
-
+        var emailExists = await _context.Students.AnyAsync(s => s.Email == model.Email);
+        if (emailExists)
+        {
+            ModelState.AddModelError("Email", "It is alerady another student use it");
+            return View(model);
+        }
         var student = new Student
         {
             FirstName = model.FirstName,
@@ -77,7 +82,12 @@ public class StudentsController : Controller
 
         var student = await _context.Students.FindAsync(id);
         if (student == null) return NotFound();
-
+        var emailExists = await _context.Students.AnyAsync(s => s.Email == model.Email);
+        if (emailExists)
+        {
+            ModelState.AddModelError("Email", "It is alerady another student use it");
+            return View(model);
+        }
         student.FirstName = model.FirstName;
         student.LastName = model.LastName;
         student.Email = model.Email;
